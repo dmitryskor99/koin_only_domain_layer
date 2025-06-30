@@ -11,6 +11,7 @@ import androidx.navigation3.ui.NavDisplay
 import kotlinx.serialization.Serializable
 import ru.dmitryskor.koin_only_domain_layer.login.IsLoginUseCase
 import ru.dmitryskor.koin_only_domain_layer.login.OnSingInUseCase
+import ru.dmitryskor.koin_only_domain_layer.room.GetRoomTimelineUseCase
 import ru.dmitryskor.koin_only_domain_layer.roomList.GetRoomsUseCase
 
 @Composable
@@ -18,7 +19,8 @@ fun BaseNavigation(
     modifier: Modifier = Modifier,
     isLogin: IsLoginUseCase,
     onSign: OnSingInUseCase,
-    getRooms: GetRoomsUseCase
+    getRooms: GetRoomsUseCase,
+    getRoomTimeline: GetRoomTimelineUseCase,
 ) {
     val isLoginState = isLogin().collectAsState()
 
@@ -40,7 +42,10 @@ fun BaseNavigation(
                 )
             }
             entry<Auth> {
-                AppNavigation(getRooms = getRooms)
+                AppNavigation(
+                    getRooms = getRooms,
+                    getRoomTimeline = getRoomTimeline
+                )
             }
         }
     )
