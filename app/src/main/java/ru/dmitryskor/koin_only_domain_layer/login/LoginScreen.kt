@@ -9,11 +9,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    onSign: OnSingInUseCase
+) {
     LoginContent(
         modifier = modifier,
         onLogin = {
-
+            onSign()
         }
     )
 }
