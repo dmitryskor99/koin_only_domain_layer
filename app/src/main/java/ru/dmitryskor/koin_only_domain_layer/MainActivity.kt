@@ -25,7 +25,8 @@ class MainActivity : ComponentActivity() {
                     BaseNavigation(
                         modifier = Modifier.padding(innerPadding),
                         isLogin = Client.getIsLoginUseCase(),
-                        onSign = Client.getOnSingInUseCase()
+                        onSign = Client.getOnSingInUseCase(),
+                        getRooms = Client.getGetRoomsUseCase()
                     )
                 }
             }

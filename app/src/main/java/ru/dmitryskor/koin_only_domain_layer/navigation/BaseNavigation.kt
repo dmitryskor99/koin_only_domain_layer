@@ -11,18 +11,18 @@ import androidx.navigation3.ui.NavDisplay
 import kotlinx.serialization.Serializable
 import ru.dmitryskor.koin_only_domain_layer.login.IsLoginUseCase
 import ru.dmitryskor.koin_only_domain_layer.login.OnSingInUseCase
+import ru.dmitryskor.koin_only_domain_layer.roomList.GetRoomsUseCase
 
 @Composable
 fun BaseNavigation(
     modifier: Modifier = Modifier,
     isLogin: IsLoginUseCase,
-    onSign: OnSingInUseCase
+    onSign: OnSingInUseCase,
+    getRooms: GetRoomsUseCase
 ) {
     val isLoginState = isLogin().collectAsState()
 
     val appStack = rememberNavBackStack<BaseNavigationKey>(if (isLoginState.value) Auth else NonAuth)
-
-    println("iuwehf appStack = $appStack")
 
     if (isLoginState.value) {
         appStack[0] = Auth
@@ -40,7 +40,7 @@ fun BaseNavigation(
                 )
             }
             entry<Auth> {
-                AppNavigation()
+                AppNavigation(getRooms = getRooms)
             }
         }
     )

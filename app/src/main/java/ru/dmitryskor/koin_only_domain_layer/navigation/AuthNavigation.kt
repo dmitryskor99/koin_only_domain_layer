@@ -18,8 +18,6 @@ fun AuthNavigation(
 ) {
     val authStack = rememberNavBackStack<AuthNavigationKey>(Login)
 
-    println("iuwehf authStack = $authStack")
-
     NavDisplay(
         modifier = modifier,
         backStack = authStack,
