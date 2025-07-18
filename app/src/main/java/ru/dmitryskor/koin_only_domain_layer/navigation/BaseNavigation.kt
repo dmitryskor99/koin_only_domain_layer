@@ -9,43 +9,34 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.serialization.Serializable
+import ru.dmitryskor.koin_only_domain_layer.Client
 import ru.dmitryskor.koin_only_domain_layer.login.IsLoginUseCase
-import ru.dmitryskor.koin_only_domain_layer.login.OnSingInUseCase
-import ru.dmitryskor.koin_only_domain_layer.room.GetRoomTimelineUseCase
-import ru.dmitryskor.koin_only_domain_layer.roomList.GetRoomsUseCase
 
 @Composable
 fun BaseNavigation(
     modifier: Modifier = Modifier,
-    isLogin: IsLoginUseCase,
-    onSign: OnSingInUseCase,
-    getRooms: GetRoomsUseCase,
-    getRoomTimeline: GetRoomTimelineUseCase,
+    isLoginState: IsLoginUseCase,
 ) {
-    val isLoginState = isLogin().collectAsState()
+    val isLoginState = isLoginState().collectAsState()
 
-    val appStack = rememberNavBackStack<BaseNavigationKey>(if (isLoginState.value) Auth else NonAuth)
-
-    if (isLoginState.value) {
-        appStack[0] = Auth
-    } else {
-        appStack[0] = NonAuth
-    }
+    val appStack = rememberNavBackStack<BaseNavigationKey>(
+        isLoginState.value?.let {
+            Auth
+        } ?: NonAuth
+    )
 
     NavDisplay(
         modifier = modifier,
         backStack = appStack,
         entryProvider = entryProvider {
             entry<NonAuth> {
+                Client.logout()
                 AuthNavigation(
-                    onSign = onSign
                 )
             }
             entry<Auth> {
-                AppNavigation(
-                    getRooms = getRooms,
-                    getRoomTimeline = getRoomTimeline
-                )
+                Client.onLogin()
+                AppNavigation()
             }
         }
     )

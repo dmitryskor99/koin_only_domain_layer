@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.serialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -35,6 +36,10 @@ android {
     buildFeatures {
         compose = true
     }
+    ksp {
+        arg("KOIN_CONFIG_CHECK","true")
+        arg("KOIN_DEFAULT_MODULE","false")
+    }
 }
 
 dependencies {
@@ -45,6 +50,10 @@ dependencies {
 
     // koin
     implementation(libs.koin)
+    implementation(libs.koin.annotations)
+    ksp(libs.koin.compiler)
+
+    testImplementation(libs.koin.test.junit4)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

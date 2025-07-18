@@ -8,16 +8,13 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.serialization.Serializable
-import ru.dmitryskor.koin_only_domain_layer.room.GetRoomTimelineUseCase
+import ru.dmitryskor.koin_only_domain_layer.Client
 import ru.dmitryskor.koin_only_domain_layer.room.RoomScreen
-import ru.dmitryskor.koin_only_domain_layer.roomList.GetRoomsUseCase
 import ru.dmitryskor.koin_only_domain_layer.roomList.RoomListScreen
 
 @Composable
 fun AppNavigation(
     modifier: Modifier = Modifier,
-    getRooms: GetRoomsUseCase,
-    getRoomTimeline: GetRoomTimelineUseCase,
 ) {
     val nonAuthStack = rememberNavBackStack<AppNavigationKey>(RoomList)
 
@@ -26,14 +23,17 @@ fun AppNavigation(
         backStack = nonAuthStack,
         entryProvider = entryProvider {
             entry<RoomList> {
-                RoomListScreen(getRooms = getRooms) {
+                Client.roomOut()
+                RoomListScreen(getRooms = Client.getGetRoomsUseCase()) {
                     nonAuthStack.add(Room(it))
                 }
             }
             entry<Room> {
+                Client.onRoom()
                 RoomScreen(
-                    getRoomTimeline = getRoomTimeline,
-                    indexRoom = it.roomIndex
+                    getRoomTimeline = Client.getGetRoomTimelineUseCase(),
+                    indexRoom = it.roomIndex,
+                    onLogout = Client.getOnLogoutUseCase()
                 )
             }
         }

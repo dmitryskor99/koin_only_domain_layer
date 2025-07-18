@@ -8,13 +8,13 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import kotlinx.serialization.Serializable
+import ru.dmitryskor.koin_only_domain_layer.Client
 import ru.dmitryskor.koin_only_domain_layer.login.LoginScreen
 import ru.dmitryskor.koin_only_domain_layer.login.OnSingInUseCase
 
 @Composable
 fun AuthNavigation(
     modifier: Modifier = Modifier,
-    onSign: OnSingInUseCase
 ) {
     val authStack = rememberNavBackStack<AuthNavigationKey>(Login)
 
@@ -24,7 +24,7 @@ fun AuthNavigation(
         entryProvider = entryProvider {
             entry<Login> {
                 LoginScreen(
-                    onSign = onSign
+                    onSign = Client.getOnSingInUseCase()
                 )
             }
         }

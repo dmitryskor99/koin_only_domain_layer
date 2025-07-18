@@ -4,7 +4,7 @@ class OnSingInUseCase(
     private val authRepository: AuthRepository
 ) {
 
-    operator fun invoke() {
+    operator fun invoke(userId: String?) {
         authRepository.onSingIn()
     }
 }
